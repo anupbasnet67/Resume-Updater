@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Maxxing</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Resume Maxxing</h1>
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+
+            <label>Upload your Resume</label>
+            <input type="file" name="resume_file"
+                accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required>
+            <label>GitHub Link</label>
+            <input type="url" name="github_link" placeholder="https://github.com/username" required>
+            <label>Job Description</label>
+            <input type="url" name="job_description" placeholder="https://www.linkedin.com/...." required>
+            <label>Other Info(Optional)</label>
+            <input type="file" name="text" accept=".txt, text/plain">
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+
+</html>
