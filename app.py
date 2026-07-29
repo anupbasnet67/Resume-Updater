@@ -1,7 +1,10 @@
 from flask import Flask, request, render_template
 import os
 from werkzeug.utils import secure_filename
-import extract
+from processing.resume import process_resume
+from processing.github import process_github_profile
+from processing.jobs import process_job_description
+from processing.other_info import process_text_file
 
 app = Flask(__name__)
 
@@ -36,11 +39,21 @@ def upload():
             print("--- Successfully extracted text from .docx ---")
             print(resume_text[:300] + "...")
 
+    #Save github link if it were uploaded
+    if github_link != "":
+        github_summary = extract.process_github_profile(github_link)
+
+    #Save job description if it were uploaded
+    if job_description != "":
+        job_markdown = extract.process_job_description(job_description)
+
     # Save the text file if one was uploaded
     if other_info.filename != "":
         other_info.save(os.path.join(UPLOAD_FOLDER, other_info.filename))
 
     return "Files uploaded successfully!"
+
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
