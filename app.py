@@ -33,7 +33,7 @@ def upload():
 
         # Use the file path with your other script to extract text
         print(f"File saved to: {resume_path}")
-        resume_text = extract.process_resume(resume_path)
+        resume_text = process_resume(resume_path)
         
         if resume_text:
             print("--- Successfully extracted text from .docx ---")
@@ -41,11 +41,11 @@ def upload():
 
     #Save github link if it were uploaded
     if github_link != "":
-        github_summary = extract.process_github_profile(github_link)
+        github_summary = process_github_profile(github_link)
 
     #Save job description if it were uploaded
     if job_description != "":
-        job_markdown = extract.process_job_description(job_description)
+        job_markdown = process_job_description(job_description)
 
     # Save the text file if one was uploaded
     if other_info.filename != "":
