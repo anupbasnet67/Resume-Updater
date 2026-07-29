@@ -4,12 +4,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume Evaluator</title>
+    <title>Processing...</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .processing-container {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .spinner {
+            border: 6px solid #f3f3f3;
+            /* Light grey */
+            border-top: 6px solid #3498db;
+            /* Blue */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1.5s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .status-list {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+
+        .status-list li {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 
 <body>
-
+    <div class="container">
+        <div class="processing-container">
+            <h1>Analyzing Your Profile</h1>
+            <p>This may take a moment. Please wait...</p>
+            <div class="spinner"></div>
+        </div>
+    </div>
 </body>
 
 </html>

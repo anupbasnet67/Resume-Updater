@@ -40,6 +40,19 @@ input[type="url"] {
     font-size: 1em;
 }
 
+textarea {
+    width: calc(100% - 24px);
+    /* Account for padding */
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9em;
+    min-height: 150px;
+    resize: vertical;
+    font-family: inherit;
+}
+
 input[type="file"] {
     border: 2px dashed #bdc3c7;
     padding: 25px;
@@ -69,6 +82,25 @@ button:hover {
     background-color: #2980b9;
 }
 
+/* Spinner for loading state */
+.spinner {
+    border: 6px solid #f3f3f3;
+    /* Light grey */
+    border-top: 6px solid #3498db;
+    /* Blue */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1.5s linear infinite;
+    margin: 30px auto;
+}
 
-/* processing.html */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
 
+    100% {
+        transform: rotate(360deg);
+    }
+}

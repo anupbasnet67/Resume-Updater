@@ -9,9 +9,9 @@
 </head>
 
 <body>
-    <div class="container">
+    <div id="form-container" class="container">
         <h1>Resume Maxxing</h1>
-        <form action="/upload" method="POST" enctype="multipart/form-data">
+        <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
 
             <label>Upload your Resume</label>
             <input type="file" name="resume_file"
@@ -19,13 +19,28 @@
             <label>GitHub Link</label>
             <input type="url" name="github_link" placeholder="https://github.com/username" required>
             <label>Job Description</label>
-            <input type="url" name="job_description" placeholder="https://www.linkedin.com/...." required>
+            <textarea name="job_description" placeholder="Paste the full job description here..." required></textarea>
             <label>Other Info(Optional)</label>
             <input type="file" name="text" accept=".txt, text/plain">
 
             <button type="submit">Submit</button>
         </form>
     </div>
+
+    <div id="loading-container" class="container" style="display: none;">
+        <h1>Analyzing Your Profile</h1>
+        <p>This may take a moment. Please wait...</p>
+        <div class="spinner"></div>
+    </div>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function () {
+            // Hide the form container
+            document.getElementById('form-container').style.display = 'none';
+            // Show the loading container
+            document.getElementById('loading-container').style.display = 'block';
+        });
+    </script>
 </body>
 
 </html>

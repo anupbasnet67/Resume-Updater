@@ -1,2 +1,6 @@
 def process_text_file(file_path):
-    pass
+
+    with open(file_path, 'r', encoding='utf-8') as file:
+        content = file.readlines()
+
+    return content
