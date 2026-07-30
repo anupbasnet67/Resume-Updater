@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Resume Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .results-container {
+            text-align: left;
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .result-section {
+            background-color: #f8f9fa;
+            border-left: 5px solid #3498db;
+            margin-bottom: 25px;
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .result-section h2 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+
+        .result-section ul {
+            padding-left: 20px;
+        }
+
+        .result-section li {
+            margin-bottom: 8px;
+        }
+
+        .ats-score {
+            font-size: 2em;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .center-button {
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container results-container">
+        <h1>Analysis Complete</h1>
+
+        <div class="result-section">
+            <h2>ATS Score</h2>
+            <p class="ats-score">{{ analysis.ats_score }}</p>
+        </div>
+
+        <div class="result-section">
+            <h2>Missing Skills</h2>
+            <ul>
+                {% for skill in analysis.missing_skills %}
+                <li>{{ skill }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="result-section">
+            <h2>Interview Prep Guide</h2>
+            <p>{{ analysis.interview_prep | safe }}</p>
+        </div>
+
+        <div class="center-button">
+            <form action="/update_resume" method="POST">
+                <input type="hidden" name="resume_path" value="{{ resume_path }}">
+                <input type="hidden" name="analysis_text" value="{{ full_analysis_text }}">
+                <input type="hidden" name="job_description" value="{{ job_description }}">
+                <button type="submit">Update My Resume</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

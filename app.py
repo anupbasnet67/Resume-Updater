@@ -15,27 +15,6 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 def home():
     return render_template("home.html")
 
-def parse_analysis(analysis_text):
-    """Parses the raw text from the AI into a structured dictionary."""
-    parsed_data = {
-        'ats_score': 'N/A',
-        'missing_skills': [],
-        'interview_prep': 'Not available.'
-    }
-    try:
-        # Simple parsing based on known headers. This can be made more robust.
-        ats_section = analysis_text.split("ATS Score:**")[1].split("**Missing Skills:")[0]
-        parsed_data['ats_score'] = ats_section.strip()
-
-        skills_section = analysis_text.split("**Missing Skills:**")[1].split("**Interview Prep Guide:")[0]
-        parsed_data['missing_skills'] = [skill.strip().lstrip('-* ').strip() for skill in skills_section.strip().split('\n') if skill.strip()]
-
-        prep_section = analysis_text.split("**Interview Prep Guide:**")[1]
-        parsed_data['interview_prep'] = prep_section.strip()
-    except IndexError:
-        print("Warning: Could not parse the AI analysis result completely.")
-    return parsed_data
-
 @app.route("/upload", methods=["POST"])
 def upload():
 
@@ -86,19 +65,25 @@ def upload():
     # --- Combine all text and send to LangChain for analysis ---
     print("\n--- Sending all data to AI for analysis... ---")
     analysis_result = analyze_candidate_fit(resume_text, job_description_text, github_summary, other_info_text)
-    
-    print("\n--- AI Analysis Complete ---")
-    print(analysis_result)
-    
-    # Parse the result for display
-    parsed_analysis = parse_analysis(analysis_result)
 
-    # Display result on a simple page for now
-    return f"<pre>{analysis_result}</pre>"
+    print("\n--- AI Analysis Complete ---")
+
+    # The result is now a structured Pydantic object. Convert it to a dict for the template.
+    if analysis_result:
+        parsed_analysis = analysis_result.model_dump()
+        # For display purposes, let's create a formatted string similar to the old one
+        full_analysis_text = f"**ATS Score:**\n{parsed_analysis['ats_score']}\n\n"
+        full_analysis_text += "**Missing Skills:**\n" + "\n".join(f"- {skill}" for skill in parsed_analysis['missing_skills']) + "\n\n"
+        full_analysis_text += f"**Interview Prep Guide:**\n{parsed_analysis['interview_prep']}"
+    else:
+        # Handle error case where analysis fails
+        parsed_analysis = {'ats_score': 'Error', 'missing_skills': [], 'interview_prep': 'Analysis failed.'}
+        full_analysis_text = "Analysis failed."
+
     return render_template("results.html", 
                            analysis=parsed_analysis, 
                            resume_path=resume_path, 
-                           full_analysis_text=analysis_result,
+                           full_analysis_text=full_analysis_text,
                            job_description=job_description_text)
 
 if __name__ == "__main__":
